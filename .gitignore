@@ -1,0 +1,38 @@
+# Maven target folder
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Ignore local config (commented out temporarily)
+# src/test/resources/config.properties
+
+# Kotlin build
+.kotlin
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+
+### Eclipse ###
+.classpath
+.factorypath
+.project
+.settings
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
