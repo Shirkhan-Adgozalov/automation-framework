@@ -22,6 +22,75 @@ A comprehensive Selenium-based test automation framework with advanced features 
 - **Page Object Model**: Clean page abstraction
 - **Hooks**: Test lifecycle management
 
+### 🔄 CI/CD Pipeline
+- **GitHub Actions**: Automated testing and deployment
+- **Multi-Java Version Support**: Java 11 & 17
+- **Code Quality Checks**: SonarCloud, Checkstyle, SpotBugs
+- **Security Scanning**: Trivy vulnerability scanner
+- **Test Reports**: Cucumber HTML reports & JaCoCo coverage
+
+## CI/CD Pipeline
+
+### 🚀 Automated Workflows
+
+#### **1. CI Pipeline** (`.github/workflows/ci.yml`)
+- ✅ Multi-Java version testing (11, 17)
+- ✅ Maven compilation & testing
+- ✅ Google Sheets integration tests
+- ✅ Test result reporting
+- ✅ Build artifact generation
+
+#### **2. Cucumber Tests** (`.github/workflows/cucumber-tests.yml`)
+- ✅ BDD scenario execution
+- ✅ Chrome/ChromeDriver setup
+- ✅ Google Sheets API integration
+- ✅ Cucumber HTML reports
+- ✅ GitHub Pages deployment
+
+#### **3. Code Quality** (`.github/workflows/code-quality.yml`)
+- ✅ Checkstyle validation
+- ✅ SpotBugs static analysis
+- ✅ SonarCloud code analysis
+- ✅ JaCoCo code coverage
+- ✅ Trivy security scanning
+
+#### **4. Deployment** (`.github/workflows/deploy.yml`)
+- ✅ Production build
+- ✅ Deployment package creation
+- ✅ Staging environment deployment
+- ✅ Smoke test execution
+- ✅ Slack notifications
+
+### 📊 Pipeline Triggers
+
+| Event | Trigger | Pipeline |
+|-------|----------|-----------|
+| Push to master | ✅ | All pipelines |
+| Pull Request | ✅ | CI, Quality, Cucumber |
+| Manual dispatch | ✅ | Deployment |
+
+### 🔧 Required GitHub Secrets
+
+Add these secrets to your GitHub repository:
+
+```bash
+# Google Sheets API Key
+GOOGLE_SHEETS_API_KEY=your_google_sheets_api_key
+
+# SonarCloud Token
+SONAR_TOKEN=your_sonarcloud_token
+
+# Slack Webhook (optional)
+SLACK_WEBHOOK=your_slack_webhook_url
+```
+
+### 📈 Pipeline Metrics
+
+- **Test Execution**: ~2-3 minutes
+- **Code Coverage**: Target >80%
+- **Build Success Rate**: Automated monitoring
+- **Security Scanning**: Every push/PR
+
 ## Project Structure
 
 ```
