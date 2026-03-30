@@ -13,7 +13,7 @@ import java.util.List;
 public class GoogleSheetsHelper {
 
     private static final String APPLICATION_NAME = "Automation Framework";
-    private static final String SPREADSHEET_ID = "YOUR_SPREADSHEET_ID_HERE"; // Replace with your Google Sheet ID
+    private static final String SPREADSHEET_ID = "1WivsU15daa_X3pRbWteC8Vdcg5Dkw-Uzl37WgR7kFE8"; // Replace with your Google Sheet ID
     
     // Get Google Sheets service
     private static Sheets getSheetsService() throws IOException, GeneralSecurityException {
@@ -25,6 +25,7 @@ public class GoogleSheetsHelper {
         Sheets service = getSheetsService();
         ValueRange response = service.spreadsheets().values()
                 .get(SPREADSHEET_ID, range)
+                .setKey(GoogleSheetsCredentialUtil.getApiKey())
                 .execute();
         
         List<List<Object>> values = response.getValues();
@@ -62,6 +63,7 @@ public class GoogleSheetsHelper {
         service.spreadsheets().values()
                 .update(SPREADSHEET_ID, range, body)
                 .setValueInputOption("USER_ENTERED")
+                .setKey(GoogleSheetsCredentialUtil.getApiKey())
                 .execute();
         
         LoggerHelper.info("Written " + data.size() + " rows to Google Sheets");
@@ -78,6 +80,7 @@ public class GoogleSheetsHelper {
         service.spreadsheets().values()
                 .append(SPREADSHEET_ID, range, body)
                 .setValueInputOption("USER_ENTERED")
+                .setKey(GoogleSheetsCredentialUtil.getApiKey())
                 .execute();
         
         LoggerHelper.info("Appended new row to Google Sheets");
@@ -88,6 +91,7 @@ public class GoogleSheetsHelper {
         Sheets service = getSheetsService();
         Spreadsheet spreadsheet = service.spreadsheets()
                 .get(SPREADSHEET_ID)
+                .setKey(GoogleSheetsCredentialUtil.getApiKey())
                 .execute();
         
         return spreadsheet.getSheets();
@@ -108,6 +112,7 @@ public class GoogleSheetsHelper {
         batchUpdateRequest.setRequests(requests);
         service.spreadsheets()
                 .batchUpdate(SPREADSHEET_ID, batchUpdateRequest)
+                .setKey(GoogleSheetsCredentialUtil.getApiKey())
                 .execute();
         
         LoggerHelper.info("Created new sheet: " + sheetTitle);
@@ -120,6 +125,7 @@ public class GoogleSheetsHelper {
         ClearValuesRequest requestBody = new ClearValuesRequest();
         service.spreadsheets().values()
                 .clear(SPREADSHEET_ID, range, requestBody)
+                .setKey(GoogleSheetsCredentialUtil.getApiKey())
                 .execute();
         
         LoggerHelper.info("Cleared data in range: " + range);
@@ -142,7 +148,7 @@ public class GoogleSheetsHelper {
     
     // Create sample test data
     public static void createSampleTestData() throws IOException, GeneralSecurityException {
-        String sheetName = "TestCases";
+        String sheetName = "Sheet1";
         
         // Create sample data
         List<List<String>> testData = new ArrayList<>();

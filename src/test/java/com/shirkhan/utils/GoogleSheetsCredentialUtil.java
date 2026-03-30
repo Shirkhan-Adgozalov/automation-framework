@@ -13,30 +13,23 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
-import java.util.List;
 
 public class GoogleSheetsCredentialUtil {
 
-    private static final String CREDENTIALS_FILE_PATH = "credentials.json";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+    private static final String API_KEY = "AIzaSyClGg9ZU9GIRnu8pgLUGnJ9-i8-YYzYTs8";
     
+    // Get Google Sheets service with API Key
     public static Sheets getSheetsService() throws IOException, GeneralSecurityException {
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(CREDENTIALS_FILE_PATH))
-                .createScoped(Collections.singleton(SheetsScopes.SPREADSHEETS));
-        
-        return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, new HttpCredentialsAdapter(credentials))
-                .setApplicationName("Automation Framework")
-                .build();
-    }
-    
-    // Alternative method for API Key (simpler setup)
-    public static Sheets getSheetsServiceWithApiKey(String apiKey) throws IOException, GeneralSecurityException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         
         return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, null)
                 .setApplicationName("Automation Framework")
                 .build();
+    }
+    
+    // Get API Key for requests
+    public static String getApiKey() {
+        return API_KEY;
     }
 }
