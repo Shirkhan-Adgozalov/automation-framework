@@ -39,22 +39,59 @@ public class Hooks {
         }
     }
 
-    @Before
+    @Before(order = 0)
     public void setup() {
+        // Reload properties to get latest changes
+        ConfigReader.reloadProperties();
+        
         String browser = ConfigReader.getProperty("browser");
+        String headlessStr = ConfigReader.getProperty("headless", "false");
+        boolean headless = Boolean.parseBoolean(headlessStr);
+        
+        // Debug output
+        System.out.println("=== DEBUG INFO ===");
+        System.out.println("Browser: " + browser);
+        System.out.println("Headless property value: " + headlessStr);
+        System.out.println("Headless boolean: " + headless);
+        System.out.println("==================");
 
         switch (browser.toLowerCase()) {
             case "firefox":
-                driver = new FirefoxDriver();
+                if (headless) {
+                    // Firefox headless setup
+                    // Note: Firefox headless requires additional configuration
+                    driver = new FirefoxDriver();
+                } else {
+                    driver = new FirefoxDriver();
+                }
                 break;
             case "edge":
-                driver = new EdgeDriver();
+                if (headless) {
+                    // Edge headless setup
+                    // Note: Edge headless requires additional configuration
+                    driver = new EdgeDriver();
+                } else {
+                    driver = new EdgeDriver();
+                }
                 break;
             default:
                 ChromeOptions options = new ChromeOptions();
                 options.addArguments("--disable-extensions");
                 options.addArguments("--disable-plugins");
                 options.addArguments("--disable-images");
+                
+                // Add headless mode if enabled
+                if (headless) {
+                    options.addArguments("--headless");
+                    options.addArguments("--disable-gpu");
+                    options.addArguments("--no-sandbox");
+                    options.addArguments("--disable-dev-shm-usage");
+                    options.addArguments("--window-size=1920,1080");
+                    System.out.println("Running in HEADLESS mode");
+                } else {
+                    System.out.println("Running in NORMAL mode");
+                }
+                
                 driver = new ChromeDriver(options);
                 break;
         }
@@ -63,6 +100,10 @@ public class Hooks {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
     }
 
+
+    public static WebDriver getDriver() {
+        return driver;
+    }
 
     @After
     public void tearDown(Scenario scenario) {

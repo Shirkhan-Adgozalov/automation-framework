@@ -38,6 +38,12 @@ public class BasePage {
         element.sendKeys(text);
     }
     
+    protected String getElementText(By locator) {
+        LoggerHelper.info("Getting text from element: " + locator.toString());
+        waitHelper.waitForElementVisible(locator);
+        return driver.findElement(locator).getText();
+    }
+    
     protected String getText(By locator) {
         LoggerHelper.info("Getting text from element: " + locator.toString());
         waitHelper.waitForElementVisible(locator);

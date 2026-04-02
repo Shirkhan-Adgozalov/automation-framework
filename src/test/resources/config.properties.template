@@ -1,0 +1,12 @@
+# Saucedemo Configuration Template
+# Copy this file to config.properties and modify as needed
+
+baseUrl=https://www.saucedemo.com/
+browser=chrome
+headless=false
+
+# Development settings
+headless=false
+
+# Production settings  
+# headless=true

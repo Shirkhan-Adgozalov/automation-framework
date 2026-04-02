@@ -2,8 +2,8 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 
-# Ignore local config (commented out temporarily)
-# src/test/resources/config.properties
+# Ignore local config (uncomment for production)
+src/test/resources/config.properties
 
 # Kotlin build
 .kotlin

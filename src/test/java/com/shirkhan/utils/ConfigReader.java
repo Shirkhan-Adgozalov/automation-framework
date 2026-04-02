@@ -9,6 +9,10 @@ public class ConfigReader {
     private static Properties properties;
 
     static {
+        loadProperties();
+    }
+
+    private static void loadProperties() {
         try {
             properties = new Properties();
             InputStream inputStream = ConfigReader.class.getClassLoader().getResourceAsStream("config.properties");
@@ -26,5 +30,13 @@ public class ConfigReader {
 
     public static String getProperty(String key) {
         return properties.getProperty(key);
+    }
+    
+    public static String getProperty(String key, String defaultValue) {
+        return properties.getProperty(key, defaultValue);
+    }
+    
+    public static void reloadProperties() {
+        loadProperties();
     }
 }

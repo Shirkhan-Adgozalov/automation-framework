@@ -5,13 +5,13 @@ import io.cucumber.testng.CucumberOptions;
 
 @CucumberOptions(
         features = "src/test/resources/features",
-        glue = {"com.shirkhan.stepDefinitions"},
+        glue = {"com.shirkhan.stepDefinitions", "com.shirkhan.base"},
         plugin = {
                 "pretty",
                 "html:target/cucumber-report.html",
                 "json:target/cucumber.json"
         },
-        tags = "@form or @smoke or @regression",
+        tags = "@saucedemo or @smoke or @regression",
         monochrome = true,
         dryRun = false
 )
