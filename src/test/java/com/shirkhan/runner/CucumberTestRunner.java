@@ -1,9 +1,10 @@
 package com.shirkhan.runner;
 
-import io.cucumber.testng.AbstractTestNGCucumberTests;
-import io.cucumber.testng.CucumberOptions;
-import org.testng.annotations.DataProvider;
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
+import org.junit.runner.RunWith;
 
+@RunWith(Cucumber.class)
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = {"com.shirkhan.stepDefinitions", "com.shirkhan.base"},
@@ -18,16 +19,6 @@ import org.testng.annotations.DataProvider;
         dryRun = false
 )
 
-public class TestRunner extends AbstractTestNGCucumberTests {
-
-    /**
-     * DataProvider for Cucumber scenarios.
-     * Parallel execution is controlled by TestNG suite XML configuration.
-     */
-    @DataProvider(parallel = false)
-    @Override
-    public Object[][] scenarios() {
-        return super.scenarios();
-    }
-
+public class CucumberTestRunner {
+    // JUnit 4 style Cucumber runner for parallel execution
 }

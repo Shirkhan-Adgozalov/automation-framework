@@ -100,6 +100,30 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- JUnit 5 -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.10.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- JUnit 4 for Cucumber -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Cucumber JUnit 5 Platform Engine -->
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-junit-platform-engine</artifactId>
+      <version>7.15.0</version>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>com.github.javafaker</groupId>
       <artifactId>javafaker</artifactId>
@@ -143,7 +167,7 @@
           <includes>
             <include>**/*Test.java</include>
             <include>**/*Tests.java</include>
-            <include>**/TestRunner.java</include>
+            <include>**/CucumberTestRunner.java</include>
           </includes>
           <systemPropertyVariables>
             <headless>false</headless>
@@ -151,10 +175,11 @@
           <failIfNoTests>false</failIfNoTests>
           <testFailureIgnore>true</testFailureIgnore>
 
-          <!-- Use TestNG suite XML for parallel execution control -->
-          <suiteXmlFiles>
-            <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
-          </suiteXmlFiles>
+          <!-- Parallel execution with thread pool management -->
+          <parallel>methods</parallel>
+          <threadCount>3</threadCount>
+          <perCoreThreadCount>false</perCoreThreadCount>
+          <useUnlimitedThreads>false</useUnlimitedThreads>
         </configuration>
       </plugin>
 
