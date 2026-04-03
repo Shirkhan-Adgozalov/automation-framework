@@ -2,6 +2,7 @@ package com.shirkhan.runner;
 
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
+import org.testng.annotations.DataProvider;
 
 @CucumberOptions(
         features = "src/test/resources/features",
@@ -9,7 +10,8 @@ import io.cucumber.testng.CucumberOptions;
         plugin = {
                 "pretty",
                 "html:target/cucumber-report.html",
-                "json:target/cucumber.json"
+                "json:target/cucumber.json",
+                "junit:target/surefire-reports/TEST-cucumber.xml"
         },
         tags = "@saucedemo or @smoke or @regression",
         monochrome = true,
@@ -17,5 +19,11 @@ import io.cucumber.testng.CucumberOptions;
 )
 
 public class TestRunner extends AbstractTestNGCucumberTests {
+
+    @DataProvider(parallel = true)
+    @Override
+    public Object[][] scenarios() {
+        return super.scenarios();
+    }
 
 }

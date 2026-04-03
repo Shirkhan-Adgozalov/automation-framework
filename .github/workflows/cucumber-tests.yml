@@ -6,12 +6,13 @@ on:
   pull_request:
     branches: [ master, main ]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
-      
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -23,29 +24,34 @@ jobs:
         distribution: 'temurin'
         
     - name: Cache Maven dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         
-    - name: Run tests
+    - name: Run Cucumber tests
       run: |
-        export DISPLAY=:99
-        Xvfb :99 -screen 0 1920x1080x24 &
-        sleep 3
-        mvn clean test -Dtest=TestRunner -Dcucumber.options="--tags=@saucedemo" || echo "Tests completed with exit code: $?"
-        
-    - name: Create dummy reports
-      run: |
-        mkdir -p target/surefire-reports
-        echo '<?xml version="1.0" encoding="UTF-8"?><testsuites><testsuite name="SaucedemoTests" tests="1" failures="0" errors="0" skipped="0" timestamp="2023-01-01T00:00:00" hostname="github-actions" time="0"><testcase name="saucedemo" classname="saucedemo" time="0"/></testsuite></testsuites>' > target/surefire-reports/TEST-SaucedemoTests.xml
-        echo '<!DOCTYPE html><html><head><title>Saucedemo Test Report</title></head><body><h1>Saucedemo Tests</h1><p>Tests completed successfully</p></body></html>' > target/cucumber-report.html
-        
-    - name: Upload artifacts
+        mvn clean test -Dtest=TestRunner -Pci 2>&1
+      continue-on-error: true
+
+    - name: Generate test report
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Cucumber Test Report
+        path: target/surefire-reports/*.xml
+        reporter: java-junit
+      continue-on-error: true
+
+    - name: Upload test artifacts
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: build-artifacts
-        path: target/
-        retention-days: 7
+        name: cucumber-artifacts
+        path: |
+          target/surefire-reports/
+          target/cucumber-report.html
+          target/cucumber.json
+          screenshots/
         if-no-files-found: warn
+        retention-days: 7
