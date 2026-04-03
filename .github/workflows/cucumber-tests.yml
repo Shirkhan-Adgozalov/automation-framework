@@ -42,3 +42,4 @@ jobs:
         name: build-artifacts
         path: target/
         retention-days: 7
+        if-no-files-found: warn
