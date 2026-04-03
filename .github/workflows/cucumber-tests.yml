@@ -13,6 +13,12 @@ on:
       - 'src/test/java/com/shirkhan/stepDefinitions/**'
       - 'src/test/resources/features/**'
       - 'src/test/java/com/shirkhan/pages/**'
+  workflow_dispatch:
+    inputs:
+      test_tags:
+        description: 'Test tags to run (default: @saucedemo)'
+        required: false
+        default: '@saucedemo'
 
 jobs:
   cucumber-tests:
