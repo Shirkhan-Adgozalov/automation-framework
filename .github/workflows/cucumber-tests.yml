@@ -1,4 +1,4 @@
-name: Cucumber BDD Tests
+name: Saucedemo BDD Tests
 
 on:
   push:
@@ -17,7 +17,9 @@ on:
 jobs:
   cucumber-tests:
     runs-on: ubuntu-latest
-    
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+      
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -49,7 +51,7 @@ jobs:
         export DISPLAY=:99
         Xvfb :99 -screen 0 1920x1080x24 &
         sleep 3
-        mvn test -Dtest=TestRunner -Dcucumber.options="--tags=@form"
+        mvn test -Dtest=TestRunner -Dcucumber.options="--tags=@saucedemo"
       env:
         GOOGLE_SHEETS_API_KEY: ${{ secrets.GOOGLE_SHEETS_API_KEY }}
         
