@@ -5,6 +5,10 @@ target/
 # Ignore local config (uncomment for production)
 src/test/resources/config.properties
 
+# Markdown documentation files
+*.md
+!README.md
+
 # Kotlin build
 .kotlin
 

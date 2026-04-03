@@ -1,33 +1,18 @@
 package com.shirkhan.runner;
 
-import io.cucumber.testng.AbstractTestNGCucumberTests;
-import io.cucumber.testng.CucumberOptions;
-import org.testng.annotations.DataProvider;
+import org.junit.platform.suite.api.ConfigurationParameter;
+import org.junit.platform.suite.api.SelectClasspathResource;
+import org.junit.platform.suite.api.Suite;
 
-@CucumberOptions(
-        features = "src/test/resources/features",
-        glue = {"com.shirkhan.stepDefinitions", "com.shirkhan.base"},
-        plugin = {
-                "pretty",
-                "html:target/cucumber-report.html",
-                "json:target/cucumber.json",
-                "junit:target/surefire-reports/TEST-cucumber.xml"
-        },
-        tags = "@saucedemo or @smoke or @regression",
-        monochrome = true,
-        dryRun = false
-)
+import static io.cucumber.junit.platform.engine.Constants.*;
 
-public class TestRunner extends AbstractTestNGCucumberTests {
-
-    /**
-     * DataProvider for Cucumber scenarios.
-     * Parallel execution is controlled by TestNG suite XML configuration.
-     */
-    @DataProvider(parallel = false)
-    @Override
-    public Object[][] scenarios() {
-        return super.scenarios();
-    }
-
+@Suite
+@SelectClasspathResource("features")
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.shirkhan.stepDefinitions, com.shirkhan.base")
+@ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty, html:target/cucumber-report.html, json:target/cucumber.json, junit:target/surefire-reports/TEST-cucumber.xml")
+@ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "@saucedemo or @smoke or @regression")
+@ConfigurationParameter(key = EXECUTION_DRY_RUN_PROPERTY_NAME, value = "false")
+public class TestRunner {
+    // JUnit 5 Cucumber Suite Runner with parallel execution support
+    // Parallelism controlled via junit-platform.properties
 }
