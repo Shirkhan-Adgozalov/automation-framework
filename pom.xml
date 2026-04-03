@@ -150,6 +150,11 @@
           </systemPropertyVariables>
           <failIfNoTests>false</failIfNoTests>
           <testFailureIgnore>true</testFailureIgnore>
+
+          <!-- Use TestNG suite XML for parallel execution control -->
+          <suiteXmlFiles>
+            <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+          </suiteXmlFiles>
         </configuration>
       </plugin>
 
@@ -235,6 +240,12 @@
                 <headless>true</headless>
               </systemPropertyVariables>
               <testFailureIgnore>true</testFailureIgnore>
+
+              <!-- Parallel execution with thread pool management for CI -->
+              <parallel>methods</parallel>
+              <threadCount>2</threadCount>
+              <perCoreThreadCount>false</perCoreThreadCount>
+              <useUnlimitedThreads>false</useUnlimitedThreads>
             </configuration>
           </plugin>
         </plugins>

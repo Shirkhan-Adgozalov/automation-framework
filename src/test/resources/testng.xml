@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Saucedemo Test Suite" verbose="1" parallel="methods" thread-count="3">
+
+    <test name="Saucedemo Tests">
+        <classes>
+            <class name="com.shirkhan.runner.TestRunner"/>
+        </classes>
+    </test>
+
+</suite>

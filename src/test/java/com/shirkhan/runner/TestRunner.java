@@ -21,11 +21,10 @@ import org.testng.annotations.DataProvider;
 public class TestRunner extends AbstractTestNGCucumberTests {
 
     /**
-     * DataProvider with parallel=true for faster test execution.
-     * Each scenario runs in parallel with its own browser instance.
-     * Note: Ensure sufficient system resources for parallel execution.
+     * DataProvider disabled - using TestNG suite XML for thread pool management.
+     * TestNG suite XML controls parallel execution with max 3 browser instances.
      */
-    @DataProvider(parallel = true)
+    @DataProvider(parallel = false)
     @Override
     public Object[][] scenarios() {
         return super.scenarios();
