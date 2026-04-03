@@ -33,7 +33,7 @@ jobs:
         export DISPLAY=:99
         Xvfb :99 -screen 0 1920x1080x24 &
         sleep 3
-        mvn clean test -Dtest=TestRunner -Dcucumber.options="--tags=@saucedemo" -Dmaven.test.failure.ignore=true || echo "Tests completed"
+        mvn clean test -Dtest=TestRunner -Dcucumber.options="--tags=@saucedemo" || echo "Tests completed with exit code: $?"
         
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
