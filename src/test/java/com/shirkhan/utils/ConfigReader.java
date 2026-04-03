@@ -29,11 +29,19 @@ public class ConfigReader {
     }
 
     public static String getProperty(String key) {
-        return properties.getProperty(key);
+        String value = properties.getProperty(key);
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+        return value;
     }
     
     public static String getProperty(String key, String defaultValue) {
-        return properties.getProperty(key, defaultValue);
+        String value = properties.getProperty(key);
+        if (value == null || value.isEmpty()) {
+            return defaultValue;
+        }
+        return value;
     }
     
     public static void reloadProperties() {

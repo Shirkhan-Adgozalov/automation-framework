@@ -28,7 +28,9 @@ jobs:
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        
+        restore-keys: |
+          ${{ runner.os }}-m2-
+
     - name: Run Cucumber tests
       run: |
         mvn clean test -Dtest=TestRunner -Pci 2>&1

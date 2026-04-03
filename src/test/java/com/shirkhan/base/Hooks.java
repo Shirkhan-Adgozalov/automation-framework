@@ -15,6 +15,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.edge.EdgeOptions;
 import java.time.Duration;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -33,6 +36,10 @@ public class Hooks {
             case "edge":
                 WebDriverManager.edgedriver().setup();
                 break;
+            case "safari":
+                // Safari doesn't need WebDriverManager setup on macOS
+                // SafariDriver works with system's Safari automatically
+                break;
             default:
                 WebDriverManager.chromedriver().setup();
                 break;
@@ -46,6 +53,12 @@ public class Hooks {
         
         String browser = ConfigReader.getProperty("browser");
         String headlessStr = ConfigReader.getProperty("headless", "false");
+
+        // Default to chrome if browser is null
+        if (browser == null || browser.isEmpty()) {
+            browser = "chrome";
+        }
+
         boolean headless = Boolean.parseBoolean(headlessStr);
         
         // Debug output
@@ -57,22 +70,36 @@ public class Hooks {
 
         switch (browser.toLowerCase()) {
             case "firefox":
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
                 if (headless) {
-                    // Firefox headless setup
-                    // Note: Firefox headless requires additional configuration
-                    driver = new FirefoxDriver();
+                    firefoxOptions.addArguments("--headless");
+                    System.out.println("Running in HEADLESS mode");
                 } else {
-                    driver = new FirefoxDriver();
+                    System.out.println("Running in NORMAL mode");
                 }
+                driver = new FirefoxDriver(firefoxOptions);
                 break;
             case "edge":
+                EdgeOptions edgeOptions = new EdgeOptions();
                 if (headless) {
-                    // Edge headless setup
-                    // Note: Edge headless requires additional configuration
-                    driver = new EdgeDriver();
+                    edgeOptions.addArguments("--headless");
+                    edgeOptions.addArguments("--disable-gpu");
+                    edgeOptions.addArguments("--no-sandbox");
+                    edgeOptions.addArguments("--disable-dev-shm-usage");
+                    edgeOptions.addArguments("--window-size=1920,1080");
+                    System.out.println("Running in HEADLESS mode");
                 } else {
-                    driver = new EdgeDriver();
+                    System.out.println("Running in NORMAL mode");
                 }
+                driver = new EdgeDriver(edgeOptions);
+                break;
+            case "safari":
+                // Safari on macOS - Headless not fully supported
+                if (headless) {
+                    System.out.println("WARNING: Safari doesn't fully support headless mode. Running in normal mode.");
+                }
+                System.out.println("Running Safari on macOS");
+                driver = new SafariDriver();
                 break;
             default:
                 ChromeOptions options = new ChromeOptions();
@@ -108,28 +135,43 @@ public class Hooks {
     @After
     public void tearDown(Scenario scenario) {
 
-        if (scenario.isFailed()) {
-
-            String fileName = scenario.getName()
-                    .replaceAll("[^a-zA-Z0-9]", "_");
-
-            // Save screenshot to screenshots folder
-            ScreenshotHelper.takeScreenshot(driver, fileName);
-
-            // Attach screenshot to cucumber report
-            byte[] screenshot =
-                    ((TakesScreenshot) driver)
-                            .getScreenshotAs(OutputType.BYTES);
-
-            scenario.attach(
-                    screenshot,
-                    "image/png",
-                    fileName
-            );
-        }
-
         if (driver != null) {
-            driver.quit();
+            if (scenario.isFailed()) {
+                String fileName = scenario.getName()
+                        .replaceAll("[^a-zA-Z0-9]", "_");
+
+                // Save screenshot to screenshots folder
+                try {
+                    ScreenshotHelper.takeScreenshot(driver, fileName);
+                } catch (Exception e) {
+                    System.out.println("Failed to take screenshot: " + e.getMessage());
+                }
+
+                // Attach screenshot to cucumber report
+                try {
+                    byte[] screenshot =
+                            ((TakesScreenshot) driver)
+                                    .getScreenshotAs(OutputType.BYTES);
+
+                    scenario.attach(
+                            screenshot,
+                            "image/png",
+                            fileName
+                    );
+                } catch (Exception e) {
+                    System.out.println("Failed to attach screenshot to report: " + e.getMessage());
+                }
+            }
+
+            // Quit driver with proper resource cleanup
+            try {
+                driver.quit();
+                driver = null;
+            } catch (Exception e) {
+                System.out.println("Error during driver quit: " + e.getMessage());
+                // Force null assignment to prevent reuse of dead driver
+                driver = null;
+            }
         }
     }
 }

@@ -15,9 +15,13 @@ public class ScreenshotHelper {
 
     public static void takeScreenshot(WebDriver driver, String fileName) {
 
-        File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        if (driver == null) {
+            System.out.println("Cannot take screenshot: WebDriver is null");
+            return;
+        }
 
         try {
+            File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 
             Files.createDirectories(Paths.get("screenshots"));
 
@@ -27,8 +31,10 @@ public class ScreenshotHelper {
             Files.copy(srcFile.toPath(),
                     Paths.get("screenshots/" + fullFileName));
 
-        } catch (IOException e) {
+            System.out.println("Screenshot saved: " + fullFileName);
 
+        } catch (IOException e) {
+            System.out.println("Failed to save screenshot: " + e.getMessage());
             e.printStackTrace();
 
         }

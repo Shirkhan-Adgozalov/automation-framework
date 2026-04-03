@@ -1,12 +1,27 @@
 # Saucedemo Configuration Template
 # Copy this file to config.properties and modify as needed
 
+# Supported browsers: chrome, firefox, edge, safari (macOS only)
 baseUrl=https://www.saucedemo.com/
 browser=chrome
 headless=false
 
 # Development settings
-headless=false
+# browser=chrome
+# headless=false
 
-# Production settings  
+# Production settings (CI/CD)
+# browser=chrome
+# headless=true
+
+# macOS Safari settings (Headless not fully supported)
+# browser=safari
+# headless=false
+
+# Firefox settings
+# browser=firefox
+# headless=true
+
+# Edge settings
+# browser=edge
 # headless=true
