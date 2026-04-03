@@ -51,7 +51,7 @@ public class Hooks {
         // Reload properties to get latest changes
         ConfigReader.reloadProperties();
         
-        String browser = ConfigReader.getProperty("browser");
+        String browser = ConfigReader.getBrowser(); // Use environment-aware browser selection
         String headlessStr = ConfigReader.getProperty("headless", "false");
 
         // Default to chrome if browser is null

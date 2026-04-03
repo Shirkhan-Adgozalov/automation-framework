@@ -2,15 +2,16 @@
 # Copy this file to config.properties and modify as needed
 
 # Supported browsers: chrome, firefox, edge, safari (macOS only)
+# NOTE: Safari automatically falls back to Chrome in CI/CD environments (Linux)
 baseUrl=https://www.saucedemo.com/
 browser=chrome
 headless=false
 
-# Development settings
+# Development settings (macOS - all browsers supported)
 # browser=chrome
 # headless=false
 
-# Production settings (CI/CD)
+# Production settings (CI/CD - headless Chrome recommended)
 # browser=chrome
 # headless=true
 
@@ -25,3 +26,8 @@ headless=false
 # Edge settings
 # browser=edge
 # headless=true
+
+# CI/CD Environment Notes:
+# - Safari automatically falls back to Chrome on Linux
+# - Use headless=true for faster CI/CD execution
+# - Chrome is recommended for CI/CD pipelines
