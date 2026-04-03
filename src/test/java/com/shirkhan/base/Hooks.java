@@ -24,7 +24,8 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class Hooks {
 
-    public static WebDriver driver;
+    // Thread-safe WebDriver for parallel execution
+    private static final ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
 
     static {
         // Setup drivers once at class loading
@@ -67,6 +68,8 @@ public class Hooks {
         System.out.println("Headless property value: " + headlessStr);
         System.out.println("Headless boolean: " + headless);
         System.out.println("==================");
+
+        WebDriver driver = null; // Declare driver variable for this thread
 
         switch (browser.toLowerCase()) {
             case "firefox":
@@ -125,15 +128,20 @@ public class Hooks {
 
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
+        // Set the driver instance for this thread
+        driverThreadLocal.set(driver);
     }
 
 
     public static WebDriver getDriver() {
-        return driver;
+        return driverThreadLocal.get();
     }
 
     @After
     public void tearDown(Scenario scenario) {
+
+        WebDriver driver = driverThreadLocal.get(); // Get the driver for this thread
 
         if (driver != null) {
             if (scenario.isFailed()) {
@@ -166,11 +174,11 @@ public class Hooks {
             // Quit driver with proper resource cleanup
             try {
                 driver.quit();
-                driver = null;
+                driverThreadLocal.remove(); // Remove driver from ThreadLocal
             } catch (Exception e) {
                 System.out.println("Error during driver quit: " + e.getMessage());
                 // Force null assignment to prevent reuse of dead driver
-                driver = null;
+                driverThreadLocal.remove();
             }
         }
     }

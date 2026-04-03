@@ -21,12 +21,11 @@ import org.testng.annotations.DataProvider;
 public class TestRunner extends AbstractTestNGCucumberTests {
 
     /**
-     * DataProvider with parallel=false to prevent HTTP client thread pool exhaustion.
-     * Parallel execution of browser instances causes Java's HttpClient to run out of
-     * threads, leading to RejectedExecutionException errors. Sequential execution is
-     * more reliable for browser-based tests.
+     * DataProvider with parallel=true for faster test execution.
+     * Each scenario runs in parallel with its own browser instance.
+     * Note: Ensure sufficient system resources for parallel execution.
      */
-    @DataProvider(parallel = false)
+    @DataProvider(parallel = true)
     @Override
     public Object[][] scenarios() {
         return super.scenarios();
