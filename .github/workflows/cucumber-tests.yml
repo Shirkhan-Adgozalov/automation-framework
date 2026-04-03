@@ -51,7 +51,7 @@ jobs:
         export DISPLAY=:99
         Xvfb :99 -screen 0 1920x1080x24 &
         sleep 3
-        mvn test -Dtest=TestRunner -Dcucumber.options="--tags=@saucedemo" || true
+        mvn test -Dtest=TestRunner -Dcucumber.options="--tags=@saucedemo" -Dmaven.test.failure.ignore=true || echo "Tests completed with some failures"
         echo "Test execution completed with exit code: $?"
       env:
         GOOGLE_SHEETS_API_KEY: ${{ secrets.GOOGLE_SHEETS_API_KEY }}
