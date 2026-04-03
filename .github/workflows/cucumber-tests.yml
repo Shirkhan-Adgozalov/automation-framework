@@ -38,7 +38,9 @@ jobs:
         export DISPLAY=:99
         Xvfb :99 -screen 0 1920x1080x24 &
         sleep 3
-        mvn test -Dtest=TestRunner -Dcucumber.options="--tags=@saucedemo" || true
+        mvn test -Dtest=TestRunner -Dcucumber.options="--tags=@saucedemo" -Dmaven.test.failure.ignore=true || echo "Tests completed with some failures"
+        ls -la target/ || echo "No target directory"
+        find target/ -name "*.xml" -o -name "*.json" -o -name "*.html" || echo "No report files found"
         
     - name: Upload test results
       uses: actions/upload-artifact@v4
