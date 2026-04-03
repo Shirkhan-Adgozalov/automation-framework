@@ -135,6 +135,10 @@
             <include>**/*Test.java</include>
             <include>**/*Tests.java</include>
           </includes>
+          <systemPropertyVariables>
+            <headless>false</headless>
+          </systemPropertyVariables>
+          <failIfNoTests>false</failIfNoTests>
         </configuration>
       </plugin>
 
