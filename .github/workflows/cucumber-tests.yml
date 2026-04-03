@@ -33,11 +33,6 @@ jobs:
       with:
         chrome-version: latest
         
-    - name: Install ChromeDriver
-      uses: browser-actions/setup-chromedriver@latest
-      with:
-        chromedriver-version: latest
-        
     - name: Run tests
       run: |
         export DISPLAY=:99
