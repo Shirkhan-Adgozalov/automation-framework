@@ -34,7 +34,7 @@ jobs:
         chrome-version: latest
         
     - name: Install ChromeDriver
-      uses: nanoufo/action-setup-chromedriver@v1
+      uses: browser-actions/setup-chromedriver@latest
       with:
         chromedriver-version: latest
         
